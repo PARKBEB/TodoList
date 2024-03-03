@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    width: 100%;
+    min-width: 1600px;
+    height: 1200px;
+    background-color: #EEEEEE;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    box-shadow: inset 0 -5px 5px -5px #333;
+}
+
+.header .title {
+    font-size: 30px;
+    margin-left: 50px;
+}
+
+.header .todo_add_Btn {
+    margin-right: 50px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    height: 1200px;
+    box-shadow: inset -5px 0 5px -5px #868282;
+}
+
+.category_add {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 32px 0 0 45px;
+}
+
+.category_add_text {
+    margin-left: 6px;
+}
+
+.category_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+    padding: 32px 0 0 52px;
+} 
+
+.category_icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
+    border-radius: 100%;
+    background-color: #90A4AE;
+}
+
+.hidebox_chk {
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    margin: 0 0 32px 52px
+}
+
+.contents .sort {
+    display: flex;
+    flex: row;
+    align-items: center;
+    padding-bottom: 41px;
+}
+
+.contents .sort img{
+    width: 40px;
+    height: 40px;
+}
+
+.sort_text {
+    margin-left: 8px;
+}
+
+.contents {
+    padding: 52px 0 0 48px;
+    color: #283593;
+    font-weight: 700;
+}
+
+.todo_wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 48px;
+}
+
+.todo_item {
+    width: 300px;
+    height: 200px;
+    background-color: #90A4AE;
+    border-radius: 30px;
+}
+
+.todo_text {
+    padding: 22px 24px 19px 28px;
+}
+
+.todo_text_header {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.todo_text_header .todo_title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.todo_text_header .dday {
+    font-size: 14px;
+    color: #FFFFFF;
+    padding-left: 14px;
+    font-weight: 500;
+}
+
+.todo_contents {
+    height: 100px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #FFFFFF;
+    word-break:break-all
+}
+
+.todo_text_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+.active_chk {
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    margin: 0 0 32px 52px
+}

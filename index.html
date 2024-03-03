@@ -4,8 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TodoList</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-    
+    <div class="header">
+        <div class="title">
+            <span>TODO</span>
+        </div>
+        <div class="todo_add_Btn" onclick="todoAddBtn()">
+            <span><img src="./img/plusBtn.png" alt="plus_button"></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="cartegory">
+                <div class="category_add" onclick="categoryAddBtn()">
+                    <div><img src="./img/plusBtn.png" alt="puls_button"></div>
+                    <div class="category_add_text">New Category</div>
+                </div>
+                <div class="category_item">
+                    <div class="category_icon"></div>
+                    <div class="category_name">All</div>
+                </div>
+            </div>
+            <div class="hidebox">
+                <input type="checkbox" class="hidebox_chk">
+                <span>Hide DoneTask</span>
+            </div>
+        </div>
+        <div class="contents">
+            <div class="sort">
+                <div><img src="./img/sort.png" alt="sort"></div>
+                <div class="sort_text">
+                    <span class="sort_date">Date order</span> |
+                    <span class="sort_latest">Latest order</span>
+                </div>
+            </div>
+            <div class="todo_wrapper">
+                <div class="todo_item">
+                    <div class="todo_text">
+                        <div class="todo_text_header">
+                            <div class="todo_title">Title</div>
+                            <div class="dday">D-day</div>
+                        </div>
+                        <div class="todo_contents">Contents</div>
+                        <div class="todo_text_footer">
+                            <div class="edit">edit</div>
+                            <div class="active">
+                                <input type="checkbox" class="active_chk">
+                                <span class="artive_text">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+                <div class="todo_item"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
