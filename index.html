@@ -11,14 +11,14 @@
         <div class="title">
             <span>TODO</span>
         </div>
-        <div class="todo_add_Btn" onclick="todoAddBtn()">
+        <div class="todo_add_Btn" onclick="todoBtn()">
             <span><img src="./img/plusBtn.png" alt="plus_button"></span>
         </div>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="cartegory">
-                <div class="category_add" onclick="categoryAddBtn()">
+                <div class="category_add" onclick="categoryBtn()">
                     <div><img src="./img/plusBtn.png" alt="puls_button"></div>
                     <div class="category_add_text">New Category</div>
                 </div>
@@ -57,16 +57,63 @@
                         </div>
                     </div>
                 </div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
-                <div class="todo_item"></div>
             </div>
         </div>
     </div>
+    <div class="category_modal">
+        <div class="category_modal_contents">
+            <div class="category_modal_header">
+                <div class="category_title_text">New Category</div>
+                <div class="category_maximum">maximum 4</div>
+            </div>
+            <div>
+                <div class="color_title">Color</div>
+                <div class="category_modal_color">
+                    <div class="category_icon gray_icon"></div>
+                    <div class="category_icon red_icon"></div>
+                    <div class="category_icon green_icon"></div>
+                    <div class="category_icon blue_icon"></div>
+                </div>
+            </div>
+            <div class="category_modal_Name">
+                <div>Category Name</div>
+                <input type="text" class="category_modal_Name_text">
+            </div>
+            <div class="category_btn">
+                <div class="category_ok_btn" onclick="categoryOkBtn()">OK</div>
+                <div class="category_cancel_btn" onclick="categoryBtn()">CANCEL</div>
+            </div>
+        </div>
+    </div>
+    <div class="todo_modal">
+        <div class="todo_modal_contents">
+            <div class="todo_modal_header">
+                <span>Todo Add</span>
+            </div>
+            <div>
+                <div class="color_title">Color</div>
+                <div class="category_modal_color">
+                    <div class="category_icon gray_icon"></div>
+                    <div class="category_icon red_icon"></div>
+                    <div class="category_icon green_icon"></div>
+                    <div class="category_icon blue_icon"></div>
+                </div>
+            </div>
+            <div class="todo_modal_title">
+                <div>Title</div>
+                <input type="text" class="todo_modal_Name_text" placeholder="add task title name...">
+            </div>
+            <div class="todo_modal_text">
+                <div>Contents</div>
+                <input type="text" class="todo_modal_contents_text" placeholder="add task contents...">
+            </div>
+            <div class="todo_btn">
+                <div class="todo_ok_btn" onclick="todoOkBtn()">OK</div>
+                <div class="todo_cancel_btn" onclick="todoBtn()">CANCEL</div>
+            </div>
+        </div>
+    </div>
+    <div class="dim"></div>
+    <script src="./index.js"></script>
 </body>
 </html>
