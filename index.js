@@ -3,6 +3,7 @@ let todoModal = document.querySelector('.todo_modal');
 let dim = document.querySelector('.dim');
 
 let categoryIcons = document.querySelectorAll('.category_icon');
+let categoryModalNameText = document.querySelector('.category_modal_Name_text');
  
 // dim이 뭐가 문제인지 모르겠음
 function categoryBtn() {
@@ -20,13 +21,11 @@ let target;
 // 카테고리 추가
 categoryIcons.forEach(function(data) {
     data.addEventListener('click', function(event) {  
-        categoryIcons.forEach(function(otherIcon) {  // console 2번찍힘
+        categoryIcons.forEach(function(otherIcon) { 
             otherIcon.style.border = "none";
-            console.log("확인:" + otherIcon.classList);
         });
-
         target = event.currentTarget;
         target.style.border = "2px solid black";
-        console.log("확인2:" + target.classList);
     });
 });
+
