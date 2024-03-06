@@ -78,6 +78,13 @@ body {
     padding: 32px 0 0 52px;
 } 
 
+.category_item_defalt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+    padding: 32px 0 0 52px;
+} 
+
 .category_icon_all {
     display: inline-block;
     width: 48px;
@@ -277,6 +284,15 @@ body {
     justify-content: space-evenly;
 }
 
+.category_del {
+    color: darkslategrey;
+    display: none;
+}
+
+.category_item:hover .category_del {  /*hover시 표시되는 위치 고정하고 싶음, 근데 못했음*/
+    display: block;
+}
+
 .todo_modal {
     position: absolute;
     top: 35%;
@@ -287,6 +303,19 @@ body {
     border-radius: 30px;
     display: none;
     z-index: 1;
+}
+
+.todo_modal_color {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.category_todo_items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .todo_modal_contents {
