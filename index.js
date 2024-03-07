@@ -112,7 +112,7 @@ function todoBtn() {
             for(const data of json) {
                 let getData=
                 `<div class="category_todo_items">
-                    <div class="${data.icon[0]} ${data.icon[1]}"></div>
+                    <div class="${data.icon[0]} ${data.icon[1]} todo_icon"></div>
                     <div class="${data.title} category_name">${data.title}</div>
                 </div>
                 `
@@ -124,9 +124,10 @@ function todoBtn() {
 }
 
 let todoTarget;
+let categoryTitle;
 
 // closet을 사용하지않으면 todoBtn()로 조회되기전에 이미 데이터를 찾으려함 > undifinded
-document.querySelector('.todo_modal_color').addEventListener('click', function(event) {
+document.querySelector('.todo_modal_color').addEventListener('click', function(event) {  // event 안에는 '.todo_modal_color'내 classList 전부 활용가능함
     const clickedItem = event.target.closest('.category_todo_items');
     let t = document.querySelectorAll('.category_icon');
 
@@ -134,31 +135,39 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
         t.forEach(function(icon) {
             icon.style.border = "none";
         })
-        
+
         todoTarget = clickedItem.querySelector('.category_icon');
         todoTarget.style.border = "2px solid black";
+        categoryTitle = clickedItem.querySelector('.category_name').value
     } 
 });
 
 // todo 등록
 function todoOkBtn() {
+    todoModal.style.display = todoModal.style.display === "none" ? "block" : "none";
+    dim.style.display = todoModal.style.display === "none" ? "none" : "block";
+
     let TodoTitle = document.querySelector('.todo_modal_Name_text').value;
     let content = document.querySelector('.todo_modal_contents_text').value;
 
-    const contents = {
-        "TodoTitle": TodoTitle,
-        "content": content
-        // "title": 임시,
-        // "icon": target.classList
-    }
-    fetch("http://localhost:3030/contents", {
-        method: "POST",
-        body: JSON.stringify(contents),
-        headers: {
-            "content-type": "application/json; charset=utf-8"
+    if(TodoTitle !== "") {
+        const contents = {
+            "title": categoryTitle,
+            "icon": todoTarget.classList,
+            "TodoTitle": TodoTitle,
+            "content": content
         }
-    })
-    .then(response => response.json())
-    .then(json => console.log(json))
-    .catch(error => console.error('Error:', error));
+        fetch("http://localhost:3030/contents", {
+            method: "POST",
+            body: JSON.stringify(contents),
+            headers: {
+                "content-type": "application/json; charset=utf-8"
+            }
+        })
+        .then(response => response.json())
+        .then(json => console.log(json))
+        .catch(error => console.error('Error:', error));
+    } else {
+        alert("공백 입력")
+    }
 } 

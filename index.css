@@ -297,7 +297,7 @@ body {
     position: absolute;
     top: 35%;
     left: 40%;
-    width: 500px;
+    width: 600px;
     height: 400px;
     background-color: white;
     border-radius: 30px;
@@ -349,6 +349,11 @@ body {
     height: 30px;
     font-size: 20px;
     border-width: 0 0 1px;
+}
+
+.todo_icon {
+    width: 30px;
+    height: 30px;
 }
 
 .todo_btn {
