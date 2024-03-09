@@ -58,7 +58,7 @@ function categoryOkBtn() {
     dim.style.display = categoryModal.style.display === "none" ? "none" : "block";
 }
 
-// 카테고리 조회
+// 카테고리 조회 // 프로미스에대한 공부 필요
 function categoryGetData(){
     fetch("http://localhost:3030/data")
     .then(response => response.json())
@@ -68,11 +68,10 @@ function categoryGetData(){
             let getData=
             `<div class="category_item">
                 <div class="${data.icon[0]} ${data.icon[1]}"></div>
-                <div class="${data.title} category_name">${data.title}</div>
+                <div class="${data.title} category_name" onclick="getTodoData()">${data.title}</div>
                 <div class="category_del" onclick="category_del()" data-id="${data.id}">X</div> 
             </div>
              `
-             
             array.push(getData);
         }
         document.querySelector('.category_item_contents').innerHTML = array.join("");
@@ -83,19 +82,20 @@ categoryGetData();
 
 // 카테고리 삭제
 function category_del() {
-        document.querySelector('.category_del').addEventListener('click', function(event){
-            let delID = event.currentTarget.dataset.id;
-            console.log("눌림");                            // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('category_del')) {
+            let delID = event.target.dataset.id;               // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
             
             fetch(`http://localhost:3030/data/${delID}`, {
                 method: "DELETE",
             })
             .then(response => response.json())
             .then(() => 
-                event.target.parentNode.remove()
+                event.target.parentNode.remove(),
+                categoryGetData()
             )
-            categoryGetData();
-        });
+        }
+    });
 }
 
 // todo 입력 조회
@@ -141,9 +141,31 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
 
         todoTarget = clickedItem.querySelector('.category_icon');
         todoTarget.style.border = "2px solid black";
-        categoryTitle = clickedItem.querySelector('.category_name').value
+        categoryTitle = clickedItem.querySelector('.category_name').innerText;
+
+        console.log("확인"+categoryTitle);
     } 
 });
+
+let titleInnerCategory; 
+
+document.querySelector('.category_item_defalt').addEventListener('click', function(event) { 
+    const clickedTitle = event.target.closest('.category_name');
+
+    if (clickedTitle) {
+        titleInnerCategory = clickedTitle.innerText;
+    } 
+});
+
+document.querySelector('.category_item_contents').addEventListener('click', function(event) { 
+    const clickedTitle = event.target.closest('.category_name');
+    console.log("확인" + clickedTitle);
+
+    if (clickedTitle) {
+        titleInnerCategory = clickedTitle.innerText;
+    } 
+});
+
 
 // todo 등록
 function todoOkBtn() {
@@ -170,7 +192,7 @@ function todoOkBtn() {
             }
         })
         .then(response => response.json())
-        .then(() => getTodoData())
+        .then(json => console.log(json))
         .catch(error => console.error('Error:', error));
     } else {
         alert("공백 입력")
@@ -184,28 +206,50 @@ function getTodoData() {
         .then(json => {
             const array2 = [];
             for(const contents of json) {
-                let addData=
-                `<div class="${contents.title}">
-                 <div class="todo_item">
-                       <div class="todo_text">
-                           <div class="todo_text_header">
-                               <div class="todo_title">Title</div>
-                               <div class="dday">D-day</div>
-                           </div>
-                           <div class="todo_contents">Contents</div>
-                           <div class="todo_text_footer">
-                               <div class="edit">edit</div>
-                               <div class="active">
-                                   <input type="checkbox" class="active_chk">
-                                   <span class="artive_text">Active</span>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                </div>`
-           
-               array2.push(addData);
+                if(titleInnerCategory === contents.title) {
+                    let addData=
+                    `<div class="${contents.title} ${contents.icon[1]}">
+                    <div class="todo_item">
+                        <div class="todo_text">
+                            <div class="todo_text_header">
+                                <div class="todo_title">${contents.TodoTitle}</div>
+                                <div class="dday">${contents.dday}</div>
+                            </div>
+                            <div class="todo_contents">${contents.content}</div>
+                            <div class="todo_text_footer">
+                                <div class="edit">edit</div>
+                                <div class="active">
+                                    <input type="checkbox" class="active_chk">
+                                    <span class="artive_text">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>`
+                    array2.push(addData);
+                } else if (titleInnerCategory === "All") {
+                    let addData=
+                    `<div class="${contents.title} ${contents.icon[1]}">
+                    <div class="todo_item">
+                        <div class="todo_text">
+                            <div class="todo_text_header">
+                                <div class="todo_title">${contents.TodoTitle}</div>
+                                <div class="dday">${contents.dday}</div>
+                            </div>
+                            <div class="todo_contents">${contents.content}</div>
+                            <div class="todo_text_footer">
+                                <div class="edit">edit</div>
+                                <div class="active">
+                                    <input type="checkbox" class="active_chk">
+                                    <span class="artive_text">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>`
+                    array2.push(addData);
+                }
+                document.querySelector('.todo_wrapper').innerHTML = array2.join("");
             }
-            document.querySelector('.todo_wrapper').innerHTML = array2.join("");
         })
     }

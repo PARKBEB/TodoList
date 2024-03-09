@@ -145,7 +145,6 @@ body {
 .todo_item {
     width: 300px;
     height: 200px;
-    background-color: #90A4AE;
     border-radius: 30px;
     box-shadow: 0px 8px 5px -2px rgb(185, 184, 184);
 }
@@ -264,18 +263,22 @@ body {
 
 .gray_icon {
     background-color: #90A4AE; 
+    border-radius: 30px;
 }
 
 .red_icon {
     background-color: #E57373; 
+    border-radius: 30px;
 }
 
 .green_icon {
     background-color: #81C784;
+    border-radius: 30px;
 }
 
 .blue_icon {
     background-color: #64B5F6;
+    border-radius: 30px;
 }
 
 .category_btn {
