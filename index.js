@@ -45,7 +45,7 @@ function categoryOkBtn() {
             }
         })
         .then(response => response.json())
-        .then(() => categoryGetData())
+        .then(() => categoryGetData())  // 왜 이게 아닐까...뭔가 꼬였다 document.querySelector('.category_item_contents').click(), 
         .catch(error => console.error('Error:', error));
 
     } else if(categoryItem.length > 4) {
@@ -192,7 +192,7 @@ function todoOkBtn() {
             }
         })
         .then(response => response.json())
-        .then(json => console.log(json))
+        .then( () => getTodoData())
         .catch(error => console.error('Error:', error));
     } else {
         alert("공백 입력")
