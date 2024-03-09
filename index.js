@@ -30,7 +30,7 @@ categoryIcons.forEach(function(data) {
 // 카테고리 Title 등록
 function categoryOkBtn() {
     let title = categoryModalNameText.value;
-    let categoryItem = document.querySelectorAll('.category_item'); // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
+    let categoryItem = document.querySelectorAll('.category_item_contents'); // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
 
     if(categoryItem.length < 5 && title !== "") {
         const data = {
@@ -72,6 +72,7 @@ function categoryGetData(){
                 <div class="category_del" onclick="category_del()" data-id="${data.id}">X</div> 
             </div>
              `
+             
             array.push(getData);
         }
         document.querySelector('.category_item_contents').innerHTML = array.join("");
@@ -109,16 +110,18 @@ function todoBtn() {
         .then(response => response.json())
         .then(json => {
             const array = [];
+            
             for(const data of json) {
                 let getData=
                 `<div class="category_todo_items">
                     <div class="${data.icon[0]} ${data.icon[1]} todo_icon"></div>
-                    <div class="${data.title} category_name">${data.title}</div>
+                    <div class="category_name">${data.title}</div>
                 </div>
                 `
+
                 array.push(getData);
             }
-            document.querySelector('.todo_modal_color').innerHTML = array.join("");
+            document.querySelector('.todo_modal_color').innerHTML = array.join("");   
         })
     }
 }
@@ -149,13 +152,15 @@ function todoOkBtn() {
 
     let TodoTitle = document.querySelector('.todo_modal_Name_text').value;
     let content = document.querySelector('.todo_modal_contents_text').value;
+    let dday = document.querySelector('.todo_modal_contents_date').value;
 
     if(TodoTitle !== "") {
         const contents = {
             "title": categoryTitle,
             "icon": todoTarget.classList,
             "TodoTitle": TodoTitle,
-            "content": content
+            "content": content,
+            "dday": dday
         }
         fetch("http://localhost:3030/contents", {
             method: "POST",
@@ -165,9 +170,42 @@ function todoOkBtn() {
             }
         })
         .then(response => response.json())
-        .then(json => console.log(json))
+        .then(() => getTodoData())
         .catch(error => console.error('Error:', error));
     } else {
         alert("공백 입력")
     }
 } 
+
+// todo 입력 조회
+function getTodoData() {
+    fetch("http://localhost:3030/contents")
+        .then(response => response.json())
+        .then(json => {
+            const array2 = [];
+            for(const contents of json) {
+                let addData=
+                `<div class="${contents.title}">
+                 <div class="todo_item">
+                       <div class="todo_text">
+                           <div class="todo_text_header">
+                               <div class="todo_title">Title</div>
+                               <div class="dday">D-day</div>
+                           </div>
+                           <div class="todo_contents">Contents</div>
+                           <div class="todo_text_footer">
+                               <div class="edit">edit</div>
+                               <div class="active">
+                                   <input type="checkbox" class="active_chk">
+                                   <span class="artive_text">Active</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>`
+           
+               array2.push(addData);
+            }
+            document.querySelector('.todo_wrapper').innerHTML = array2.join("");
+        })
+    }
