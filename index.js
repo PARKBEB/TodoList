@@ -69,7 +69,7 @@ function categoryGetData(){
             `<div class="category_item">
                 <div class="${data.icon[0]} ${data.icon[1]}"></div>
                 <div class="${data.title} category_name" onclick="getTodoData()">${data.title}</div>
-                <div class="category_del" onclick="category_del()" data-id="${data.id}">X</div> 
+                <div class="category_del" onclick="category_del()" data-title="${data.title}" data-id="${data.id}">X</div> 
             </div>
              `
             array.push(getData);
@@ -81,12 +81,31 @@ function categoryGetData(){
 categoryGetData();
 
 // 카테고리 삭제
+// function category_del() {
+//     document.addEventListener('click', function(event) {
+//         if (event.target.classList.contains('category_del')) {
+//             let delID = event.target.dataset.id;               // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
+            
+//             fetch(`http://localhost:3030/data/${delID}`, {
+//                 method: "DELETE",
+//             })
+//             .then(response => response.json())
+//             .then(() => 
+//                 event.target.parentNode.remove(),
+//                 categoryGetData()
+//             )
+//         }
+//     });
+// }
+
+
+// 카테고리 삭제-카테고리 태스크도 모두 삭제
 function category_del() {
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('category_del')) {
-            let delID = event.target.dataset.id;               // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
-            
-            fetch(`http://localhost:3030/data/${delID}`, {
+            let delTitle = event.target.dataset.title;
+
+            fetch(`http://localhost:3030/data/${delTitle}`, {
                 method: "DELETE",
             })
             .then(response => response.json())
@@ -159,7 +178,6 @@ document.querySelector('.category_item_defalt').addEventListener('click', functi
 
 document.querySelector('.category_item_contents').addEventListener('click', function(event) { 
     const clickedTitle = event.target.closest('.category_name');
-    console.log("확인" + clickedTitle);
 
     if (clickedTitle) {
         titleInnerCategory = clickedTitle.innerText;
@@ -270,3 +288,5 @@ function getTodoData() {
             }
         })
     }
+
+  
