@@ -366,6 +366,60 @@ body {
     font-size: 20px;
 }
 
+
+/* edit */
+.edit_modal {
+    position: absolute;
+    top: 35%;
+    left: 40%;
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    border-radius: 30px;
+    display: none;
+    z-index: 1;
+}
+
+.edit_modal_contents {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.edit_modal_header {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.edit_modal_color {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.edit_modal_title, .edit_modal_text{
+    font-size: 18px;
+}
+
+.edit_modal_Name_text {
+    margin-top: 7px;
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    border-width: 0 0 1px;
+}
+
+.edit_modal_contents_text {
+    margin-top: 7px;
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    border-width: 0 0 1px;
+}
+
 .dim {
     position: absolute;
     top: 0;
@@ -374,3 +428,4 @@ body {
     background-color:rgba(0, 0, 0, 0.3);
     display: none;
 }
+

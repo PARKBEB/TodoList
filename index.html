@@ -98,6 +98,34 @@
             </div>
         </div>
     </div>
+    <div class="edit_modal">
+        <div class="edit_modal_contents">
+            <div class="edit_modal_header">
+                <span>Todo Edit & Delete</span>
+            </div>
+            <div>
+                <div class="color_title">Category</div>
+                <div class="edit_modal_color">
+                </div>
+            </div>
+            <div class="edit_modal_title">
+                <div>Title</div>
+                <input type="text" class="edit_modal_Name_text" placeholder="add task title name...">
+            </div>
+            <div class="edit_modal_text">
+                <div>Contents</div>
+                <input type="text" class="edit_modal_contents_text" placeholder="add task contents...">
+            </div>
+            <div class="edit_modal_date">
+                <div>Due Date</div>
+                <input type="date" class="edit_modal_contents_date" placeholder="yy-mm-dd">
+            </div>
+            <div class="todo_btn">
+                <div class="edit_ok_btn" onclick="todoEditBtn()">EDIT</div>
+                <div class="edit_cancel_btn" onclick="todoDeleteBtn()">DELETE</div>
+            </div>
+        </div>
+    </div>
     <div class="dim"></div>
     <script src="./index.js"></script>
 </body>

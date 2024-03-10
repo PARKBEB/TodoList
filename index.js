@@ -81,31 +81,12 @@ function categoryGetData(){
 categoryGetData();
 
 // 카테고리 삭제
-// function category_del() {
-//     document.addEventListener('click', function(event) {
-//         if (event.target.classList.contains('category_del')) {
-//             let delID = event.target.dataset.id;               // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
-            
-//             fetch(`http://localhost:3030/data/${delID}`, {
-//                 method: "DELETE",
-//             })
-//             .then(response => response.json())
-//             .then(() => 
-//                 event.target.parentNode.remove(),
-//                 categoryGetData()
-//             )
-//         }
-//     });
-// }
-
-
-// 카테고리 삭제-카테고리 태스크도 모두 삭제
 function category_del() {
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('category_del')) {
-            let delTitle = event.target.dataset.title;
-
-            fetch(`http://localhost:3030/data/${delTitle}`, {
+            let delID = event.target.dataset.id;               // ❗여러번 눌러야함 // 추측: category_del() 클릭 1번 + category_del에 추가된 click 이벤트 1번 총 2회
+            
+            fetch(`http://localhost:3030/data/${delID}`, {
                 method: "DELETE",
             })
             .then(response => response.json())
@@ -116,6 +97,24 @@ function category_del() {
         }
     });
 }
+
+// // 카테고리 삭제-카테고리 태스크도 모두 삭제   // delete는 쿼리스트링 불가
+// function category_del() {
+//     document.addEventListener('click', function(event) {
+//         if (event.target.classList.contains('category_del')) {
+//             let delTitle = event.target.dataset.title;
+
+//             fetch(`http://localhost:3030/data?title=${delTitle}`, {
+//                 method: "DELETE",
+//             })
+//             .then(response => response.json())
+//             .then(() => 
+//                 event.target.parentNode.remove(),
+//                 categoryGetData()
+//             )
+//         }
+//     });
+// }
 
 // todo 입력 조회
 function todoBtn() {
@@ -184,7 +183,6 @@ document.querySelector('.category_item_contents').addEventListener('click', func
     } 
 });
 
-
 // todo 등록
 function todoOkBtn() {
     todoModal.style.display = todoModal.style.display === "none" ? "block" : "none";
@@ -252,7 +250,7 @@ function getTodoData() {
                             </div>
                             <div class="todo_contents">${contents.content}</div>
                             <div class="todo_text_footer">
-                                <div class="edit">edit</div>
+                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
                                 <div class="active">
                                     <input type="checkbox" class="active_chk">
                                     <span class="artive_text">Active</span>
@@ -289,4 +287,61 @@ function getTodoData() {
         })
     }
 
+let editModal = document.querySelector('.edit_modal');
+
+// 수정 조회  // ❗dim이 뭐가 문제인지 모르겠음  css 스타일이 none으로 되어있는데 block으로 인식되는듯
+function edit() {
+    editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
+    dim.style.display = todoModal.style.display === "none" ? "none" : "block";
+
+        fetch(`http://localhost:3030/contents`)
+            .then(response => response.json())
+            .then(json => {
+                const array = [];
+
+                for(const data of json) {
+                    let getData=
+                    `<div class="category_todo_items">
+                        <div class="${data.icon[0]} ${data.icon[1]} todo_icon"></div>
+                        <div class="category_name">${data.title}</div>
+                    </div>
+                    `
+
+                    array.push(getData);
+                }
+                document.querySelector('.edit_modal_color').innerHTML = array.join("");   
+            })
+
+            
+        document.addEventListener('click', function(event) {
+            let contentsID = event.target.dataset.id
+            
+            fetch(`http://localhost:3030/contents/${contentsID}`)
+            .then(response => response.json())
+            .then(json => {
+                    document.querySelector('.edit_modal_Name_text').value = json.TodoTitle;
+                    document.querySelector('.edit_modal_contents_text').value = json.content;
+            })
+        });
+}
   
+// 수정 등록
+function todoEditBtn() {
+
+}
+
+// 태스크 삭제
+function todoDeleteBtn() {
+    document.addEventListener('click', function(event) {
+        let delID = event.target.dataset.id;             
+        
+        fetch(`http://localhost:3030/contents/${delID}`, {
+            method: "DELETE",
+        })
+        .then(response => response.json())
+        .then(() => 
+            event.target.parentNode.remove(),
+            categoryGetData()
+        )
+    });
+}
