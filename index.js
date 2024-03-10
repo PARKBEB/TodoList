@@ -321,6 +321,8 @@ function edit() {
             .then(json => {
                     document.querySelector('.edit_modal_Name_text').value = json.TodoTitle;
                     document.querySelector('.edit_modal_contents_text').value = json.content;
+                    document.querySelector('.edit_cancel_btn').setAttribute('data-id', json.id);
+                    document.querySelector('.edit_ok_btn').setAttribute('data-id', json.id);
             })
         });
 }
@@ -333,7 +335,8 @@ function todoEditBtn() {
 // 태스크 삭제
 function todoDeleteBtn() {
     document.addEventListener('click', function(event) {
-        let delID = event.target.dataset.id;             
+        let delID = event.target.dataset.id;
+        console.log("체크: " + delID);            
         
         fetch(`http://localhost:3030/contents/${delID}`, {
             method: "DELETE",
@@ -341,7 +344,7 @@ function todoDeleteBtn() {
         .then(response => response.json())
         .then(() => 
             event.target.parentNode.remove(),
-            categoryGetData()
+            location.reload() // 새로고침 < 좋은 방법은 아닌듯
         )
     });
 }
