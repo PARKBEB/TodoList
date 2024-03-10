@@ -174,7 +174,24 @@ function todoOkBtn() {
 
     let TodoTitle = document.querySelector('.todo_modal_Name_text').value;
     let content = document.querySelector('.todo_modal_contents_text').value;
+
+    let today = new Date();
     let dday = document.querySelector('.todo_modal_contents_date').value;
+    let dateInsert = new Date(dday);
+
+    dateInsert.setHours(today.getHours());
+    dateInsert.setMinutes(today.getMinutes());
+    dateInsert.setSeconds(today.getSeconds());
+    dateInsert.setMilliseconds(today.getMilliseconds());
+
+    let ddayInput = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+    if(ddayInput < 0) {
+        ddayInput = "D+"+ ddayInput * -1;
+    } else if (ddayInput === 0){
+        ddayInput = "D-DAY!"
+    } else {
+        ddayInput = "D-" + ddayInput;
+    }
 
     if(TodoTitle !== "") {
         const contents = {
@@ -182,7 +199,7 @@ function todoOkBtn() {
             "icon": todoTarget.classList,
             "TodoTitle": TodoTitle,
             "content": content,
-            "dday": dday
+            "dday": ddayInput
         }
         fetch("http://localhost:3030/contents", {
             method: "POST",
