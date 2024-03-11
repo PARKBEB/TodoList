@@ -160,8 +160,6 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
         todoTarget = clickedItem.querySelector('.category_icon');
         todoTarget.style.border = "2px solid black";
         categoryTitle = clickedItem.querySelector('.category_name').innerText;
-
-        console.log("확인"+categoryTitle);
     } 
 });
 
@@ -232,6 +230,9 @@ function todoOkBtn() {
     }
 } 
 
+titleInnerCategory = "All";
+getTodoData();
+
 // todo 입력 조회
 function getTodoData() {
     fetch("http://localhost:3030/contents")
@@ -241,7 +242,7 @@ function getTodoData() {
             for(const contents of json) {
                 if(titleInnerCategory === contents.title) {
                     let addData=
-                    `<div class="${contents.title} ${contents.icon[1]}">
+                    `<div class="${contents.title} ${contents.icon[1]} active_display">
                     <div class="todo_item">
                         <div class="todo_text">
                             <div class="todo_text_header">
@@ -263,22 +264,22 @@ function getTodoData() {
                 } else if (titleInnerCategory === "All") {
                     let addData=
                     `<div class="${contents.title} ${contents.icon[1]}">
-                    <div class="todo_item">
-                        <div class="todo_text">
-                            <div class="todo_text_header">
-                                <div class="todo_title">${contents.TodoTitle}</div>
-                                <div class="dday">${contents.dday}</div>
-                            </div>
-                            <div class="todo_contents">${contents.content}</div>
-                            <div class="todo_text_footer">
-                                <div class="edit">edit</div>
-                                <div class="active">
-                                    <input type="checkbox" class="active_chk">
-                                    <span class="artive_text">Active</span>
+                        <div class="todo_item">
+                            <div class="todo_text">
+                                <div class="todo_text_header">
+                                    <div class="todo_title">${contents.TodoTitle}</div>
+                                    <div class="dday">${contents.dday}</div>
+                                </div>
+                                <div class="todo_contents">${contents.content}</div>
+                                <div class="todo_text_footer">
+                                    <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
+                                    <div class="active">
+                                        <input type="checkbox" class="active_chk">
+                                        <span class="artive_text">Active</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>`
                     array2.push(addData);
                 }
@@ -289,12 +290,28 @@ function getTodoData() {
 
 let editModal = document.querySelector('.edit_modal');
 
+document.querySelector('.edit_modal_color').addEventListener('click', function(event) {  // event 안에는 '.edit_modal_color'내 classList 전부 활용가능함
+    const clickedItem = event.target.closest('.category_todo_items');
+    let t = document.querySelectorAll('.category_icon');
+
+    if (clickedItem) {
+        t.forEach(function(icon) {
+            icon.style.border = "none";
+        })
+
+        todoTarget = clickedItem.querySelector('.category_icon');
+        todoTarget.style.border = "2px solid black";
+        categoryTitle = clickedItem.querySelector('.category_name').innerText;
+    } 
+});
+
+
 // 수정 조회  // ❗dim이 뭐가 문제인지 모르겠음  css 스타일이 none으로 되어있는데 block으로 인식되는듯
 function edit() {
     editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
-    dim.style.display = todoModal.style.display === "none" ? "none" : "block";
+    dim.style.display = todoModal.style.display === "block" ? "none" : "block"; 
 
-        fetch(`http://localhost:3030/contents`)
+        fetch(`http://localhost:3030/data`)
             .then(response => response.json())
             .then(json => {
                 const array = [];
@@ -329,14 +346,64 @@ function edit() {
   
 // 수정 등록
 function todoEditBtn() {
+    editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
+    dim.style.display = editModal.style.display === "none" ? "none" : "block"; // ❗dim 이랑 modal 왜이러지
 
+    let TodoTitleEdit = document.querySelector('.edit_modal_Name_text').value;
+    let contentEdit = document.querySelector('.edit_modal_contents_text').value;
+
+    let today = new Date();
+    let dday = document.querySelector('.edit_modal_contents_date').value;
+    let dateInsert = new Date(dday);
+
+    dateInsert.setHours(today.getHours());
+    dateInsert.setMinutes(today.getMinutes());
+    dateInsert.setSeconds(today.getSeconds());
+    dateInsert.setMilliseconds(today.getMilliseconds());
+
+    let ddayInput = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+    if(ddayInput < 0) {
+        ddayInput = "D+"+ ddayInput * -1;
+    } else if (ddayInput === 0){
+        ddayInput = "D-DAY!"
+    } else {
+        ddayInput = "D-" + ddayInput;
+    }
+
+    document.addEventListener('click', function(event) {
+        let putID = event.target.dataset.id;
+        console.log("체크: " + putID);   
+        console.log("체크2: " + categoryTitle);
+        console.log("체크3: " + todoTarget.classList);   
+
+        if(TodoTitleEdit !== "") {
+            const contents = {
+                "title": categoryTitle,
+                "icon": todoTarget.classList,
+                "TodoTitle": TodoTitleEdit,
+                "content": contentEdit,
+                "dday": ddayInput
+            }
+            fetch(`http://localhost:3030/contents/${putID}`, {
+                method: "PUT",
+                body: JSON.stringify(contents),
+                headers: {
+                    "content-type": "application/json; charset=utf-8"
+                }
+            })
+            .then(response => response.json())
+            .then(() => location.reload()) // ❗getTodoData()로 하면 todoEditButton을 클릭한 다음 > edit을 누르면 이전 데이터가 todoGetdata에 보여짐..새로고침은 좋은 방향이 아님
+            .catch(error => console.error('Error:', error));
+        } else {
+            alert("공백 입력")
+        }
+    });
 }
 
 // 태스크 삭제
 function todoDeleteBtn() {
     document.addEventListener('click', function(event) {
-        let delID = event.target.dataset.id;
-        console.log("체크: " + delID);            
+        let delID = event.target.dataset.id;         
         
         fetch(`http://localhost:3030/contents/${delID}`, {
             method: "DELETE",
@@ -348,3 +415,17 @@ function todoDeleteBtn() {
         )
     });
 }
+
+// 체크박스
+
+document.querySelector('.todo_wrapper').addEventListener('change', function(event) {
+    const chkItem = event.target.closest('.active');
+    console.log("뿅:" + event.currentTarget)
+    if(chkItem) {
+        if (event.target.checked) {
+            console.log("확인")
+        } else {
+            console.log("확인2")
+        }
+    }
+});
