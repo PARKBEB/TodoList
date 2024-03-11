@@ -213,7 +213,8 @@ function todoOkBtn() {
             "icon": todoTarget.classList,
             "TodoTitle": TodoTitle,
             "content": content,
-            "dday": ddayInput
+            "dday": ddayInput,
+            "active": "block"
         }
         fetch("http://localhost:3030/contents", {
             method: "POST",
@@ -242,7 +243,7 @@ function getTodoData() {
             for(const contents of json) {
                 if(titleInnerCategory === contents.title) {
                     let addData=
-                    `<div class="${contents.title} ${contents.icon[1]} active_display">
+                    `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
                     <div class="todo_item">
                         <div class="todo_text">
                             <div class="todo_text_header">
@@ -263,7 +264,7 @@ function getTodoData() {
                     array2.push(addData);
                 } else if (titleInnerCategory === "All") {
                     let addData=
-                    `<div class="${contents.title} ${contents.icon[1]}">
+                    `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
                         <div class="todo_item">
                             <div class="todo_text">
                                 <div class="todo_text_header">
@@ -343,7 +344,7 @@ function edit() {
             })
         });
 }
-  
+
 // 수정 등록
 function todoEditBtn() {
     editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
@@ -372,9 +373,6 @@ function todoEditBtn() {
 
     document.addEventListener('click', function(event) {
         let putID = event.target.dataset.id;
-        console.log("체크: " + putID);   
-        console.log("체크2: " + categoryTitle);
-        console.log("체크3: " + todoTarget.classList);   
 
         if(TodoTitleEdit !== "") {
             const contents = {
@@ -392,7 +390,7 @@ function todoEditBtn() {
                 }
             })
             .then(response => response.json())
-            .then(() => location.reload()) // ❗getTodoData()로 하면 todoEditButton을 클릭한 다음 > edit을 누르면 이전 데이터가 todoGetdata에 보여짐..새로고침은 좋은 방향이 아님
+            .then(() => location.reload())     // ❗getTodoData()로 하면 todoEditButton을 클릭한 다음 > edit을 누르면 이전 데이터가 todoGetdata에 보여짐..새로고침은 좋은 방향이 아님
             .catch(error => console.error('Error:', error));
         } else {
             alert("공백 입력")
@@ -417,15 +415,30 @@ function todoDeleteBtn() {
 }
 
 // 체크박스
-
 document.querySelector('.todo_wrapper').addEventListener('change', function(event) {
-    const chkItem = event.target.closest('.active');
-    console.log("뿅:" + event.currentTarget)
+    const chkItem = event.target.closest('.active_display');
+    let chkContentID = event.target.closest('.active_display').dataset.id;
+    
+
     if(chkItem) {
         if (event.target.checked) {
-            console.log("확인")
-        } else {
-            console.log("확인2")
-        }
+            // POST불가 PUT가능 < active: "none" 하나만 불가함
+            // 일부만 변경할떄는 PATCH를 쓰자!
+
+            const patchData = {
+                "active": "none"
+            };
+            
+            fetch(`http://localhost:3030/contents/${chkContentID}`, {
+                method: 'PATCH', // HTTP 메서드를 PATCH로 설정합니다.
+                headers: {
+                    'Content-Type': 'application/json' // 요청 본문의 형식을 JSON으로 설정합니다.
+                },
+                body: JSON.stringify(patchData) // JSON 형식으로 데이터를 직렬화하여 요청 본문에 포함합니다.
+            })
+            .then(() => getTodoData())
+            .then(json => console.log(json))
+
+        } 
     }
 });
