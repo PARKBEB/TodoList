@@ -199,6 +199,8 @@ function todoOkBtn() {
     dateInsert.setMilliseconds(today.getMilliseconds());
 
     let ddayInput = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+    let ddayInputNum = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+
     if(ddayInput < 0) {
         ddayInput = "D+"+ ddayInput * -1;
     } else if (ddayInput === 0){
@@ -214,6 +216,7 @@ function todoOkBtn() {
             "TodoTitle": TodoTitle,
             "content": content,
             "dday": ddayInput,
+            "ddayNum": ddayInputNum,
             "active": "block"
         }
         fetch("http://localhost:3030/contents", {
@@ -363,6 +366,8 @@ function todoEditBtn() {
     dateInsert.setMilliseconds(today.getMilliseconds());
 
     let ddayInput = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+    let ddayInputNum = Math.floor((dateInsert - today) / (24 * 60 * 60 * 1000));
+
     if(ddayInput < 0) {
         ddayInput = "D+"+ ddayInput * -1;
     } else if (ddayInput === 0){
@@ -380,7 +385,8 @@ function todoEditBtn() {
                 "icon": todoTarget.classList,
                 "TodoTitle": TodoTitleEdit,
                 "content": contentEdit,
-                "dday": ddayInput
+                "dday": ddayInput,
+                "ddayNum": ddayInputNum
             }
             fetch(`http://localhost:3030/contents/${putID}`, {
                 method: "PUT",
@@ -526,3 +532,94 @@ document.querySelector('.hidebox_chk').addEventListener('change', function(event
         })
     }
 })
+
+function sortDate() {
+    fetch("http://localhost:3030/contents")
+    .then(response => response.json())
+    .then(json => {
+        const array = [];
+        for(const contents of json) {
+            if(contents.active === "none") {
+                contents.active = "none";
+            } else {
+                contents.active = "block";
+            }
+            let getData =
+            `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
+                <div class="todo_item">
+                    <div class="todo_text">
+                        <div class="todo_text_header">
+                            <div class="todo_title">${contents.TodoTitle}</div>
+                            <div class="dday">${contents.dday}</div>
+                        </div>
+                        <div class="todo_contents">${contents.content}</div>
+                        <div class="todo_text_footer">
+                            <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
+                            <div class="active">
+                                <input type="checkbox" class="active_chk">
+                                <span class="active_text">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            array.push(getData);
+        }
+        document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
+    })
+}
+
+function sortLatest() {
+    fetch("http://localhost:3030/contents")
+    .then(response => response.json())
+    .then(json => {
+        const array = [];
+        for(const contents of json) {
+            if(contents.active === "none") {
+                contents.active = "none";
+            } else {
+                contents.active = "block";
+            }
+            let getData =
+            `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
+                <div class="todo_item">
+                    <div class="todo_text">
+                        <div class="todo_text_header">
+                            <div class="todo_title">${contents.TodoTitle}</div>
+                            <div class="dday">${contents.dday}</div>
+                        </div>
+                        <div class="todo_contents">${contents.content}</div>
+                        <div class="todo_text_footer">
+                            <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
+                            <div class="active">
+                                <input type="checkbox" class="active_chk">
+                                <span class="active_text">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+
+            array.push({element: getData, ddayNum: contents.ddayNum});
+        }
+        array.sort((a, b) => {
+            return compare(a.ddayNum, b.ddayNum);
+        });
+        
+        // 정렬된 array의 각 요소에서 item.element를 추출하여 새로운 배
+        const elements = array.map(item => item.element).join(""); 
+
+        // 결과를 todo_wrapper 요소에 할당
+        document.querySelector('.todo_wrapper').innerHTML = elements;
+    })
+}
+
+function compare(a, b) {
+    if (a < b) {
+        return -1;
+    }
+    if (a > b) {
+        return 1;
+    }
+    return 0;
+}
