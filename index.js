@@ -419,7 +419,6 @@ document.querySelector('.todo_wrapper').addEventListener('change', function(even
     const chkItem = event.target.closest('.active_display');
     let chkContentID = event.target.closest('.active_display').dataset.id;
     
-
     if(chkItem) {
         if (event.target.checked) {
             // POST불가 PUT가능 < active: "none" 하나만 불가함
@@ -437,8 +436,93 @@ document.querySelector('.todo_wrapper').addEventListener('change', function(even
                 body: JSON.stringify(patchData) // JSON 형식으로 데이터를 직렬화하여 요청 본문에 포함합니다.
             })
             .then(() => getTodoData())
-            .then(json => console.log(json))
 
-        } 
+        } else {
+            const patchData = {
+                "active": "block"
+            };
+            
+            fetch(`http://localhost:3030/contents/${chkContentID}`, {
+                method: 'PATCH', 
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(patchData)
+            })
+            .then(() => location.reload())
+
+        }
     }
 });
+
+document.querySelector('.hidebox_chk').addEventListener('change', function(event) {
+    if(event.target.checked) {
+        fetch("http://localhost:3030/contents")
+        .then(response => response.json())
+        .then(json => {
+            const array = [];
+            for(const contents of json) {
+                if(contents.active === "none") {
+                    contents.active = "block";
+                } else {
+                    contents.active = "none";
+                }
+                let getData =
+                `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
+                    <div class="todo_item">
+                        <div class="todo_text">
+                            <div class="todo_text_header">
+                                <div class="todo_title">${contents.TodoTitle}</div>
+                                <div class="dday">${contents.dday}</div>
+                            </div>
+                            <div class="todo_contents">${contents.content}</div>
+                            <div class="todo_text_footer">
+                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
+                                <div class="active">
+                                    <input type="checkbox" class="active_chk" checked>
+                                    <span class="active_text">Done</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                array.push(getData);
+            }
+            document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
+        })
+    } else {
+        fetch("http://localhost:3030/contents")
+        .then(response => response.json())
+        .then(json => {
+            const array = [];
+            for(const contents of json) {
+                if(contents.active === "none") {
+                    contents.active = "none";
+                } else {
+                    contents.active = "block";
+                }
+                let getData =
+                `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
+                    <div class="todo_item">
+                        <div class="todo_text">
+                            <div class="todo_text_header">
+                                <div class="todo_title">${contents.TodoTitle}</div>
+                                <div class="dday">${contents.dday}</div>
+                            </div>
+                            <div class="todo_contents">${contents.content}</div>
+                            <div class="todo_text_footer">
+                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
+                                <div class="active">
+                                    <input type="checkbox" class="active_chk">
+                                    <span class="active_text">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                array.push(getData);
+            }
+            document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
+        })
+    }
+})
