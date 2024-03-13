@@ -100,6 +100,7 @@ body {
     height: 48px;
     margin-right: 12px;
     border-radius: 100%;
+    position: relative;
 }
 
 .hidebox_chk {
@@ -177,7 +178,8 @@ body {
     font-size: 18px;
     font-weight: 500;
     color: #FFFFFF;
-    word-break:break-all
+    word-break:break-all;
+    padding-top: 15px;
 }
 
 .todo_text_footer {
@@ -290,6 +292,8 @@ body {
 .category_del {
     color: darkslategrey;
     display: none;
+    position: absolute;
+    left: 250px;
 }
 
 .category_item:hover .category_del {  /*hover시 표시되는 위치 고정하고 싶음, 근데 못했음*/
@@ -429,3 +433,8 @@ body {
     display: none;
 }
 
+input[type="date"] {
+    width: 100%;
+    font-size: 20px;
+    border-width: 0 0 1px;
+}

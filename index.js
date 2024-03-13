@@ -30,9 +30,9 @@ categoryIcons.forEach(function(data) {
 // 카테고리 Title 등록
 function categoryOkBtn() {
     let title = categoryModalNameText.value;
-    let categoryItem = document.querySelectorAll('.category_item_contents'); // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
+    let categoryItem = document.querySelectorAll('.category_item'); // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
 
-    if(categoryItem.length < 5 && title !== "") {
+    if(categoryItem.length < 4 && title !== "") {
         const data = {
             "title": title,
             "icon": target.classList
@@ -48,7 +48,7 @@ function categoryOkBtn() {
         .then(() => categoryGetData())  // 왜 이게 아닐까...뭔가 꼬였다 document.querySelector('.category_item_contents').click(), 
         .catch(error => console.error('Error:', error));
 
-    } else if(categoryItem.length > 4) {
+    } else if(categoryItem.length > 3) {
         alert("4개 이상 입력 불가");
     } else if(title === "") {
         alert("타이틀 공백 불가");
@@ -98,26 +98,11 @@ function category_del() {
     });
 }
 
-// // 카테고리 삭제-카테고리 태스크도 모두 삭제   // delete는 쿼리스트링 불가
-// function category_del() {
-//     document.addEventListener('click', function(event) {
-//         if (event.target.classList.contains('category_del')) {
-//             let delTitle = event.target.dataset.title;
-
-//             fetch(`http://localhost:3030/data?title=${delTitle}`, {
-//                 method: "DELETE",
-//             })
-//             .then(response => response.json())
-//             .then(() => 
-//                 event.target.parentNode.remove(),
-//                 categoryGetData()
-//             )
-//         }
-//     });
-// }
-
 // todo 입력 조회
 function todoBtn() {
+    document.querySelector('.todo_modal_Name_text').value = "";
+    document.querySelector('.todo_modal_contents_text').value = "";
+
     if(document.querySelector('.category_item') === null){
         alert("카테고리 등록 필요");
     } else {
@@ -204,7 +189,7 @@ function todoOkBtn() {
     if(ddayInput < 0) {
         ddayInput = "D+"+ ddayInput * -1;
     } else if (ddayInput === 0){
-        ddayInput = "D-DAY!"
+        ddayInput = "✨D-DAY"
     } else {
         ddayInput = "D-" + ddayInput;
     }
@@ -371,7 +356,7 @@ function todoEditBtn() {
     if(ddayInput < 0) {
         ddayInput = "D+"+ ddayInput * -1;
     } else if (ddayInput === 0){
-        ddayInput = "D-DAY!"
+        ddayInput = "✨D-DAY"
     } else {
         ddayInput = "D-" + ddayInput;
     }
