@@ -438,3 +438,14 @@ input[type="date"] {
     font-size: 20px;
     border-width: 0 0 1px;
 }
+
+.required_items {
+    background-color: #ec533f;
+    color: #EEEEEE;
+    font-size: 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-left: 5px;
+    width: 60px;
+    padding-left: 6px;
+}

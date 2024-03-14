@@ -27,7 +27,6 @@
   ],
   "contents": [
     {
-      "id": "0086",
       "title": "study🌱",
       "icon": {
         "0": "category_icon",
@@ -36,23 +35,22 @@
       },
       "TodoTitle": "Japaness",
       "content": "word / write",
-      "dday": "✨D-DAY",
-      "ddayNum": 0,
-      "active": "block"
+      "dday": "D+8",
+      "ddayNum": -8,
+      "id": "0086"
     },
     {
-      "id": "3fe1",
-      "title": "run🏃‍♀",
+      "title": "😎",
       "icon": {
         "0": "category_icon",
-        "1": "blue_icon",
+        "1": "red_icon",
         "2": "todo_icon"
       },
       "TodoTitle": "Running",
       "content": "1 hour",
-      "dday": "D-7",
-      "ddayNum": 7,
-      "active": "block"
+      "dday": "D-NaN",
+      "ddayNum": null,
+      "id": "3fe1"
     },
     {
       "id": "c799",
