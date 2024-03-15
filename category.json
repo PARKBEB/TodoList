@@ -35,21 +35,21 @@
       },
       "TodoTitle": "Japaness",
       "content": "word / write",
-      "dday": "D+8",
-      "ddayNum": -8,
+      "dday": "D+16",
+      "ddayNum": -16,
       "id": "0086"
     },
     {
-      "title": "😎",
+      "title": "run🏃‍♀",
       "icon": {
         "0": "category_icon",
-        "1": "red_icon",
+        "1": "blue_icon",
         "2": "todo_icon"
       },
       "TodoTitle": "Running",
       "content": "1 hour",
-      "dday": "D-NaN",
-      "ddayNum": null,
+      "dday": "D+8",
+      "ddayNum": -8,
       "id": "3fe1"
     },
     {
@@ -93,6 +93,19 @@
       "dday": "D-2",
       "ddayNum": 2,
       "active": "block"
+    },
+    {
+      "title": "study🌱",
+      "icon": {
+        "0": "category_icon",
+        "1": "green_icon",
+        "2": "todo_icon"
+      },
+      "TodoTitle": "문제점",
+      "content": "1. 팝업category 미선택 >등록 불가 2. 수정시 날짜 데이터가 재입력안하면 NaN",
+      "dday": "D-1",
+      "ddayNum": 1,
+      "id": "e805"
     }
   ]
 }

@@ -1,9 +1,13 @@
 let categoryModal = document.querySelector('.category_modal');
 let todoModal = document.querySelector('.todo_modal');
+let editModal = document.querySelector('.edit_modal');
 let dim = document.querySelector('.dim');
 
-let categoryModalNameText = document.querySelector('.category_modal_Name_text');
+let categoryIcons = document.querySelectorAll('.category_icon');
 let categoryDelAll = document.querySelectorAll('.category_del');
+let categoryModalNameText = document.querySelector('.category_modal_Name_text');
+
+// category
 
 // ❗dim이 뭐가 문제인지 모르겠음
 function categoryBtn() {        // ❗맨 처음 시작할 때 더블 클릭해야함
@@ -13,10 +17,9 @@ function categoryBtn() {        // ❗맨 처음 시작할 때 더블 클릭해�
     categoryModalNameText.value = ""
 }
 
-let categoryIcons = document.querySelectorAll('.category_icon');
 let target;
 
-// 카테고리 아이콘 선택
+// 카테고리 아이콘 선택시 표시
 categoryIcons.forEach(function(data) {
     data.addEventListener('click', function(event) {  
         categoryIcons.forEach(function(otherIcon) { 
@@ -98,6 +101,8 @@ function category_del() {
     });
 }
 
+// todo
+
 // todo 입력 조회
 function todoBtn() {
     document.querySelector('.todo_modal_Name_text').value = "";
@@ -133,6 +138,7 @@ let todoTarget;
 let categoryTitle;
 
 // closet을 사용하지않으면 todoBtn()로 조회되기전에 이미 데이터를 찾으려함 > undifinded
+// todo 카테고리 아이콘 선택
 document.querySelector('.todo_modal_color').addEventListener('click', function(event) {  // event 안에는 '.todo_modal_color'내 classList 전부 활용가능함
     const clickedItem = event.target.closest('.category_todo_items');
     let t = document.querySelectorAll('.category_icon');
@@ -150,7 +156,8 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
 
 let titleInnerCategory; 
 
-document.querySelector('.category_item_defalt').addEventListener('click', function(event) { 
+// category All
+document.querySelector('.category_item_default').addEventListener('click', function(event) { 
     const clickedTitle = event.target.closest('.category_name');
 
     if (clickedTitle) {
@@ -158,6 +165,7 @@ document.querySelector('.category_item_defalt').addEventListener('click', functi
     } 
 });
 
+// category All외
 document.querySelector('.category_item_contents').addEventListener('click', function(event) { 
     const clickedTitle = event.target.closest('.category_name');
 
@@ -222,7 +230,7 @@ function todoOkBtn() {
 titleInnerCategory = "All";
 getTodoData();
 
-// todo 입력 조회
+// todo 태스크 조회
 function getTodoData() {
     fetch("http://localhost:3030/contents")
         .then(response => response.json())
@@ -277,8 +285,7 @@ function getTodoData() {
         })
     }
 
-let editModal = document.querySelector('.edit_modal');
-
+// 카테고리 아이콘 선택시 표시
 document.querySelector('.edit_modal_color').addEventListener('click', function(event) {  // event 안에는 '.edit_modal_color'내 classList 전부 활용가능함
     const clickedItem = event.target.closest('.category_todo_items');
     let t = document.querySelectorAll('.category_icon');
@@ -295,7 +302,7 @@ document.querySelector('.edit_modal_color').addEventListener('click', function(e
 });
 
 
-// 수정 조회  // ❗dim이 뭐가 문제인지 모르겠음  css 스타일이 none으로 되어있는데 block으로 인식되는듯
+// 태스크 수정    // ❗dim이 뭐가 문제인지 모르겠음  css 스타일이 none으로 되어있는데 block으로 인식되는듯
 function edit() {
     editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
     dim.style.display = todoModal.style.display === "block" ? "none" : "block"; 
@@ -304,7 +311,7 @@ function edit() {
             .then(response => response.json())
             .then(json => {
                 const array = [];
-
+    
                 for(const data of json) {
                     let getData=
                     `<div class="category_todo_items">
@@ -333,7 +340,7 @@ function edit() {
         });
 }
 
-// 수정 등록
+// 태스크 수정 후 등록
 function todoEditBtn() {
     editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
     dim.style.display = editModal.style.display === "none" ? "none" : "block"; // ❗dim 이랑 modal 왜이러지
@@ -405,7 +412,7 @@ function todoDeleteBtn() {
     });
 }
 
-// 체크박스
+// 태스크 별 active-done
 document.querySelector('.todo_wrapper').addEventListener('change', function(event) {
     const chkItem = event.target.closest('.active_display');
     let chkContentID = event.target.closest('.active_display').dataset.id;
@@ -446,6 +453,8 @@ document.querySelector('.todo_wrapper').addEventListener('change', function(even
     }
 });
 
+
+// 태스크 전체 active-done
 document.querySelector('.hidebox_chk').addEventListener('change', function(event) {
     if(event.target.checked) {
         fetch("http://localhost:3030/contents")
@@ -518,6 +527,7 @@ document.querySelector('.hidebox_chk').addEventListener('change', function(event
     }
 })
 
+// 생성순 정렬
 function sortDate() {
     fetch("http://localhost:3030/contents")
     .then(response => response.json())
@@ -554,6 +564,7 @@ function sortDate() {
     })
 }
 
+// d-day순 정렬
 function sortLatest() {
     fetch("http://localhost:3030/contents")
     .then(response => response.json())
@@ -591,7 +602,7 @@ function sortLatest() {
             return compare(a.ddayNum, b.ddayNum);
         });
         
-        // 정렬된 array의 각 요소에서 item.element를 추출하여 새로운 배
+        // 정렬된 array의 각 요소에서 item.element를 추출하여 새로운 배열
         const elements = array.map(item => item.element).join(""); 
 
         // 결과를 todo_wrapper 요소에 할당

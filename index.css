@@ -78,7 +78,7 @@ body {
     padding: 32px 0 0 52px;
 } 
 
-.category_item_defalt {
+.category_item_default {
     display: flex;
     flex-direction: row;
     align-items: center;  
@@ -136,6 +136,8 @@ body {
     font-weight: 700;
 }
 
+/* Todo */
+
 .todo_wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -190,13 +192,14 @@ body {
     font-weight: 500;
 }
 
+/* End Todo */
+
 .active_chk {
     width: 15px;
     height: 15px;
     border-radius: 10px;
     margin: 0 0 32px 52px
 }
-
 /* End Contents */
 
 /* End Container */
@@ -296,7 +299,7 @@ body {
     left: 250px;
 }
 
-.category_item:hover .category_del {  /*hover시 표시되는 위치 고정하고 싶음, 근데 못했음*/
+.category_item:hover .category_del { 
     display: block;
 }
 
@@ -371,7 +374,8 @@ body {
 }
 
 
-/* edit */
+/* Edit */
+
 .edit_modal {
     position: absolute;
     top: 35%;
@@ -424,6 +428,8 @@ body {
     border-width: 0 0 1px;
 }
 
+/* End Edit */
+
 .dim {
     position: absolute;
     top: 0;
@@ -437,15 +443,4 @@ input[type="date"] {
     width: 100%;
     font-size: 20px;
     border-width: 0 0 1px;
-}
-
-.required_items {
-    background-color: #ec533f;
-    color: #EEEEEE;
-    font-size: 12px;
-    border-radius: 20px;
-    display: inline-block;
-    margin-left: 5px;
-    width: 60px;
-    padding-left: 6px;
 }
