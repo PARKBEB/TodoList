@@ -1,7 +1,7 @@
 let categoryModal = document.querySelector('.category_modal');
 let todoModal = document.querySelector('.todo_modal');
 let editModal = document.querySelector('.edit_modal');
-let dim = document.querySelector('.dim');
+let dim = document.querySelector('.modals');
 
 let categoryIcons = document.querySelectorAll('.category_icon');
 let categoryDelAll = document.querySelectorAll('.category_del');
@@ -9,10 +9,9 @@ let categoryModalNameText = document.querySelector('.category_modal_Name_text');
 
 // category
 
-// ❗dim이 뭐가 문제인지 모르겠음
-function categoryBtn() {        // ❗맨 처음 시작할 때 더블 클릭해야함
+function categoryBtn() {
     categoryModal.style.display = categoryModal.style.display === "none" ? "block" : "none";
-    dim.style.display = categoryModal.style.display === "none" ? "none" : "block";
+    dim.style.display = dim.style.display === "none" ? "block" : "none";
 
     categoryModalNameText.value = ""
 }
@@ -33,7 +32,8 @@ categoryIcons.forEach(function(data) {
 // 카테고리 Title 등록
 function categoryOkBtn() {
     let title = categoryModalNameText.value;
-    let categoryItem = document.querySelectorAll('.category_item'); // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
+    // ❗변수를 전역으로 쓰면 categoryItem.length이 계속 1로 표시됨 이유 생각해야함
+    let categoryItem = document.querySelectorAll('.category_item');
 
     if(categoryItem.length < 4 && title !== "") {
         const data = {
@@ -61,12 +61,15 @@ function categoryOkBtn() {
     dim.style.display = categoryModal.style.display === "none" ? "none" : "block";
 }
 
+categoryGetData();
+
 // 카테고리 조회 // 프로미스에대한 공부 필요
 function categoryGetData(){
     fetch("http://localhost:3030/data")
     .then(response => response.json())
     .then(json => {
         const array = [];
+
         for(const data of json) {
             let getData=
             `<div class="category_item">
@@ -77,11 +80,12 @@ function categoryGetData(){
              `
             array.push(getData);
         }
+
         document.querySelector('.category_item_contents').innerHTML = array.join("");
     })
 }
 
-categoryGetData();
+
 
 // 카테고리 삭제
 function category_del() {
@@ -111,10 +115,10 @@ function todoBtn() {
     if(document.querySelector('.category_item') === null){
         alert("카테고리 등록 필요");
     } else {
-    todoModal.style.display = todoModal.style.display === "none" ? "block" : "none";
-    dim.style.display = todoModal.style.display === "none" ? "none" : "block";
+        todoModal.style.display = todoModal.style.display === "none" ? "block" : "none";
+        dim.style.display = todoModal.style.display === "none" ? "none" : "block";
 
-    fetch("http://localhost:3030/data")
+        fetch("http://localhost:3030/data")
         .then(response => response.json())
         .then(json => {
             const array = [];
@@ -129,6 +133,7 @@ function todoBtn() {
 
                 array.push(getData);
             }
+
             document.querySelector('.todo_modal_color').innerHTML = array.join("");   
         })
     }
@@ -156,23 +161,22 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
 
 let titleInnerCategory; 
 
-// category All
-document.querySelector('.category_item_default').addEventListener('click', function(event) { 
-    const clickedTitle = event.target.closest('.category_name');
+init();
 
-    if (clickedTitle) {
-        titleInnerCategory = clickedTitle.innerText;
-    } 
-});
+function init() {
+    setCategory('.category_item_default');
+    setCategory('.category_item_contents');
+}
 
-// category All외
-document.querySelector('.category_item_contents').addEventListener('click', function(event) { 
-    const clickedTitle = event.target.closest('.category_name');
-
-    if (clickedTitle) {
-        titleInnerCategory = clickedTitle.innerText;
-    } 
-});
+function setCategory(categoryName) {
+    document.querySelector(categoryName).addEventListener('click', function(event) { 
+        const clickedTitle = event.target.closest('.category_name');
+    
+        if (clickedTitle) {
+            titleInnerCategory = clickedTitle.innerText;
+        } 
+    });
+}
 
 // todo 등록
 function todoOkBtn() {
@@ -228,62 +232,54 @@ function todoOkBtn() {
 } 
 
 titleInnerCategory = "All";
+
 getTodoData();
 
-// todo 태스크 조회
+function getItem(contents, isDone) {
+    var checkboxHtml = isDone ? `<input type="checkbox" class="active_chk" checked><span class="active_text">Done</span>` : `<input type="checkbox" class="active_chk"><span class="active_text">Active</span>`
+
+    var returnHtml = 
+    `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
+        <div class="todo_item">
+            <div class="todo_text">
+                <div class="todo_text_header">
+                    <div class="todo_title">${contents.TodoTitle}
+                    </div>
+                    <div class="dday">${contents.dday}
+                    </div>
+                </div>
+                <div class="todo_contents">${contents.content}
+                </div>
+                <div class="todo_text_footer">
+                    <div class="edit" onclick="edit()" data-id="${contents.id}">edit
+                    </div>
+                    <div class="active">` + checkboxHtml +
+                    `
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`
+    
+    return returnHtml;
+}
+
+// After
 function getTodoData() {
     fetch("http://localhost:3030/contents")
-        .then(response => response.json())
-        .then(json => {
-            const array2 = [];
-            for(const contents of json) {
-                if(titleInnerCategory === contents.title) {
-                    let addData=
-                    `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                    <div class="todo_item">
-                        <div class="todo_text">
-                            <div class="todo_text_header">
-                                <div class="todo_title">${contents.TodoTitle}</div>
-                                <div class="dday">${contents.dday}</div>
-                            </div>
-                            <div class="todo_contents">${contents.content}</div>
-                            <div class="todo_text_footer">
-                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                                <div class="active">
-                                    <input type="checkbox" class="active_chk">
-                                    <span class="artive_text">Active</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>`
-                    array2.push(addData);
-                } else if (titleInnerCategory === "All") {
-                    let addData=
-                    `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                        <div class="todo_item">
-                            <div class="todo_text">
-                                <div class="todo_text_header">
-                                    <div class="todo_title">${contents.TodoTitle}</div>
-                                    <div class="dday">${contents.dday}</div>
-                                </div>
-                                <div class="todo_contents">${contents.content}</div>
-                                <div class="todo_text_footer">
-                                    <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                                    <div class="active">
-                                        <input type="checkbox" class="active_chk">
-                                        <span class="artive_text">Active</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                    array2.push(addData);
-                }
-                document.querySelector('.todo_wrapper').innerHTML = array2.join("");
+    .then(response => response.json())
+    .then(json => {
+        const arr = [];
+        for(const contents of json) {
+            if(titleInnerCategory === contents.title || titleInnerCategory === "All") {
+                let addData = getItem(contents, false);
+                arr.push(addData);
             }
-        })
-    }
+
+            document.querySelector('.todo_wrapper').innerHTML = arr.join("");
+        }
+    })
+}
 
 // 카테고리 아이콘 선택시 표시
 document.querySelector('.edit_modal_color').addEventListener('click', function(event) {  // event 안에는 '.edit_modal_color'내 classList 전부 활용가능함
@@ -322,6 +318,7 @@ function edit() {
 
                     array.push(getData);
                 }
+
                 document.querySelector('.edit_modal_color').innerHTML = array.join("");   
             })
 
@@ -345,9 +342,11 @@ function todoEditBtn() {
     editModal.style.display = editModal.style.display === "block" ? "none" : "block";   
     dim.style.display = editModal.style.display === "none" ? "none" : "block"; // ❗dim 이랑 modal 왜이러지
 
+    // Title
     let TodoTitleEdit = document.querySelector('.edit_modal_Name_text').value;
     let contentEdit = document.querySelector('.edit_modal_contents_text').value;
 
+    // Date
     let today = new Date();
     let dday = document.querySelector('.edit_modal_contents_date').value;
     let dateInsert = new Date(dday);
@@ -461,31 +460,14 @@ document.querySelector('.hidebox_chk').addEventListener('change', function(event
         .then(response => response.json())
         .then(json => {
             const array = [];
+
             for(const contents of json) {
                 if(contents.active === "none") {
                     contents.active = "block";
                 } else {
                     contents.active = "none";
                 }
-                let getData =
-                `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                    <div class="todo_item">
-                        <div class="todo_text">
-                            <div class="todo_text_header">
-                                <div class="todo_title">${contents.TodoTitle}</div>
-                                <div class="dday">${contents.dday}</div>
-                            </div>
-                            <div class="todo_contents">${contents.content}</div>
-                            <div class="todo_text_footer">
-                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                                <div class="active">
-                                    <input type="checkbox" class="active_chk" checked>
-                                    <span class="active_text">Done</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+                let getData = getItem(contents, true);
                 array.push(getData);
             }
             document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
@@ -501,25 +483,7 @@ document.querySelector('.hidebox_chk').addEventListener('change', function(event
                 } else {
                     contents.active = "block";
                 }
-                let getData =
-                `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                    <div class="todo_item">
-                        <div class="todo_text">
-                            <div class="todo_text_header">
-                                <div class="todo_title">${contents.TodoTitle}</div>
-                                <div class="dday">${contents.dday}</div>
-                            </div>
-                            <div class="todo_contents">${contents.content}</div>
-                            <div class="todo_text_footer">
-                                <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                                <div class="active">
-                                    <input type="checkbox" class="active_chk">
-                                    <span class="active_text">Active</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+                let getData = getItem(contents, false);
                 array.push(getData);
             }
             document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
@@ -539,25 +503,7 @@ function sortDate() {
             } else {
                 contents.active = "block";
             }
-            let getData =
-            `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                <div class="todo_item">
-                    <div class="todo_text">
-                        <div class="todo_text_header">
-                            <div class="todo_title">${contents.TodoTitle}</div>
-                            <div class="dday">${contents.dday}</div>
-                        </div>
-                        <div class="todo_contents">${contents.content}</div>
-                        <div class="todo_text_footer">
-                            <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                            <div class="active">
-                                <input type="checkbox" class="active_chk">
-                                <span class="active_text">Active</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+            let getData = getItem(contents, false);
             array.push(getData);
         }
         document.querySelector('.todo_wrapper').innerHTML = array.join(""); 
@@ -576,26 +522,7 @@ function sortLatest() {
             } else {
                 contents.active = "block";
             }
-            let getData =
-            `<div class="${contents.title} ${contents.icon[1]} active_display" data-id="${contents.id}" style="display: ${contents.active};">
-                <div class="todo_item">
-                    <div class="todo_text">
-                        <div class="todo_text_header">
-                            <div class="todo_title">${contents.TodoTitle}</div>
-                            <div class="dday">${contents.dday}</div>
-                        </div>
-                        <div class="todo_contents">${contents.content}</div>
-                        <div class="todo_text_footer">
-                            <div class="edit" onclick="edit()" data-id="${contents.id}">edit</div>
-                            <div class="active">
-                                <input type="checkbox" class="active_chk">
-                                <span class="active_text">Active</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`
-
+            let getData = getItem(contents, false);
             array.push({element: getData, ddayNum: contents.ddayNum});
         }
         array.sort((a, b) => {

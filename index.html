@@ -45,88 +45,89 @@
             </div>
         </div>
     </div>
-    <div class="category_modal">
-        <div class="category_modal_contents">
-            <div class="category_modal_header">
-                <div class="category_title_text">New Category</div>
-                <div class="category_maximum">maximum 4</div>
-            </div>
-            <div>
-                <div class="color_title">Color</div>
-                <div class="category_modal_color">
-                    <div class="category_icon gray_icon"></div>
-                    <div class="category_icon red_icon"></div>
-                    <div class="category_icon green_icon"></div>
-                    <div class="category_icon blue_icon"></div>
+    <div class="modals" style="display: none;">
+        <div class="category_modal" style="display: none;">
+            <div class="category_modal_contents">
+                <div class="category_modal_header">
+                    <div class="category_title_text">New Category</div>
+                    <div class="category_maximum">maximum 4</div>
+                </div>
+                <div>
+                    <div class="color_title">Color</div>
+                    <div class="category_modal_color">
+                        <div class="category_icon gray_icon"></div>
+                        <div class="category_icon red_icon"></div>
+                        <div class="category_icon green_icon"></div>
+                        <div class="category_icon blue_icon"></div>
+                    </div>
+                </div>
+                <div class="category_modal_Name">
+                    <div>Category Name</div>
+                    <input type="text" class="category_modal_Name_text" placeholder="maximum 7..." maxlength="7">
+                </div>
+                <div class="category_btn">
+                    <div class="category_ok_btn" onclick="categoryOkBtn()">OK</div>
+                    <div class="category_cancel_btn" onclick="categoryBtn()">CANCEL</div>
                 </div>
             </div>
-            <div class="category_modal_Name">
-                <div>Category Name</div>
-                <input type="text" class="category_modal_Name_text" placeholder="maximum 7..." maxlength="7">
+        </div>
+        <div class="todo_modal">
+            <div class="todo_modal_contents">
+                <div class="todo_modal_header">
+                    <span>Todo Add</span>
+                </div>
+                <div>
+                    <div class="color_title">Category</div>
+                    <div class="todo_modal_color">
+                    </div>
+                </div>
+                <div class="todo_modal_title">
+                    <div>Title</div>
+                    <input type="text" class="todo_modal_Name_text" placeholder="add task title name...">
+                </div>
+                <div class="todo_modal_text">
+                    <div>Contents</div>
+                    <input type="text" class="todo_modal_contents_text" placeholder="add task contents...">
+                </div>
+                <div class="todo_modal_date">
+                    <div>Due Date</div>
+                    <input type="date" class="todo_modal_contents_date" placeholder="YYYY-MM-DD">
+                </div>
+                <div class="todo_btn">
+                    <div class="todo_ok_btn" onclick="todoOkBtn()">OK</div>
+                    <div class="todo_cancel_btn" onclick="todoBtn()">CANCEL</div>
+                </div>
             </div>
-            <div class="category_btn">
-                <div class="category_ok_btn" onclick="categoryOkBtn()">OK</div>
-                <div class="category_cancel_btn" onclick="categoryBtn()">CANCEL</div>
+        </div>
+        <div class="edit_modal">
+            <div class="edit_modal_contents">
+                <div class="edit_modal_header">
+                    <span>Todo Edit & Delete</span>
+                </div>
+                <div>
+                    <div class="color_title">Category</div>
+                    <div class="edit_modal_color">
+                    </div>
+                </div>
+                <div class="edit_modal_title">
+                    <div>Title</div>
+                    <input type="text" class="edit_modal_Name_text" placeholder="add task title name...">
+                </div>
+                <div class="edit_modal_text">
+                    <div>Contents</div>
+                    <input type="text" class="edit_modal_contents_text" placeholder="add task contents...">
+                </div>
+                <div class="edit_modal_date">
+                    <div>Due Date</div>
+                    <input type="date" class="edit_modal_contents_date" placeholder="YYYY-MM-DD">
+                </div>
+                <div class="todo_btn">
+                    <div class="edit_ok_btn" onclick="todoEditBtn()">EDIT</div>
+                    <div class="edit_cancel_btn" onclick="todoDeleteBtn()">DELETE</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="todo_modal">
-        <div class="todo_modal_contents">
-            <div class="todo_modal_header">
-                <span>Todo Add</span>
-            </div>
-            <div>
-                <div class="color_title">Category</div>
-                <div class="todo_modal_color">
-                </div>
-            </div>
-            <div class="todo_modal_title">
-                <div>Title</div>
-                <input type="text" class="todo_modal_Name_text" placeholder="add task title name...">
-            </div>
-            <div class="todo_modal_text">
-                <div>Contents</div>
-                <input type="text" class="todo_modal_contents_text" placeholder="add task contents...">
-            </div>
-            <div class="todo_modal_date">
-                <div>Due Date</div>
-                <input type="date" class="todo_modal_contents_date" placeholder="YYYY-MM-DD">
-            </div>
-            <div class="todo_btn">
-                <div class="todo_ok_btn" onclick="todoOkBtn()">OK</div>
-                <div class="todo_cancel_btn" onclick="todoBtn()">CANCEL</div>
-            </div>
-        </div>
-    </div>
-    <div class="edit_modal">
-        <div class="edit_modal_contents">
-            <div class="edit_modal_header">
-                <span>Todo Edit & Delete</span>
-            </div>
-            <div>
-                <div class="color_title">Category</div>
-                <div class="edit_modal_color">
-                </div>
-            </div>
-            <div class="edit_modal_title">
-                <div>Title</div>
-                <input type="text" class="edit_modal_Name_text" placeholder="add task title name...">
-            </div>
-            <div class="edit_modal_text">
-                <div>Contents</div>
-                <input type="text" class="edit_modal_contents_text" placeholder="add task contents...">
-            </div>
-            <div class="edit_modal_date">
-                <div>Due Date</div>
-                <input type="date" class="edit_modal_contents_date" placeholder="YYYY-MM-DD">
-            </div>
-            <div class="todo_btn">
-                <div class="edit_ok_btn" onclick="todoEditBtn()">EDIT</div>
-                <div class="edit_cancel_btn" onclick="todoDeleteBtn()">DELETE</div>
-            </div>
-        </div>
-    </div>
-    <div class="dim"></div>
     <script src="./index.js"></script>
 </body>
 </html>
