@@ -7,6 +7,14 @@ let categoryIcons = document.querySelectorAll('.category_icon');
 let categoryDelAll = document.querySelectorAll('.category_del');
 let categoryModalNameText = document.querySelector('.category_modal_Name_text');
 
+function init() {
+    categoryGetData();
+    setCategory('.category_item_default');
+    setCategory('.category_item_contents');
+}
+
+init();
+
 // category
 
 function categoryBtn() {
@@ -61,7 +69,7 @@ function categoryOkBtn() {
     dim.style.display = categoryModal.style.display === "none" ? "none" : "block";
 }
 
-categoryGetData();
+
 
 // 카테고리 조회 // 프로미스에대한 공부 필요
 function categoryGetData(){
@@ -84,8 +92,6 @@ function categoryGetData(){
         document.querySelector('.category_item_contents').innerHTML = array.join("");
     })
 }
-
-
 
 // 카테고리 삭제
 function category_del() {
@@ -160,13 +166,6 @@ document.querySelector('.todo_modal_color').addEventListener('click', function(e
 });
 
 let titleInnerCategory; 
-
-init();
-
-function init() {
-    setCategory('.category_item_default');
-    setCategory('.category_item_contents');
-}
 
 function setCategory(categoryName) {
     document.querySelector(categoryName).addEventListener('click', function(event) { 
